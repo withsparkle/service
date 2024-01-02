@@ -1,38 +1,40 @@
+version: 2
+
 project_name: sparkle
 
 archives:
   - id: sparkle
+    ids:
+      - sparkle
     files:
       - LICENSE
       - PATENTS
-    format: tar.gz
+    formats: [tar.gz]
     name_template: "{{.ProjectName}}_{{.Version}}_{{.Os}}-{{.Arch}}"
 
+# brews is deprecated upstream, but it is the only GoReleaser generator of a
+# Formula (as octopot/indexit and octomation/maintainer). Keep GoReleaser
+# pinned in CI.
 brews:
   - name: sparkle
+    ids: [sparkle]
+    # a prerelease tag (vX.Y.Z-rcN) leaves the tap as it is
+    skip_upload: auto
     commit_author:
-      name: Kamil Samigullin
-      email: kamil@samigullin.info
-    description: |
-      ✨ Sparkle service. The personal development framework
-      and Personal Knowledge Management platform.
-    folder: Formula
+      use_github_app_token: true
+    description: "✨ Sparkle service. The personal development framework and Personal Knowledge Management platform."
+    directory: Formula
     homepage: https://sparkle.wiki/
     repository:
       owner: octolab
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     install: |
       bin.install "sparkle"
-      output = Utils.popen_read("#{bin}/sparkle completion bash")
-      (bash_completion/"sparkle").write output
-      output = Utils.popen_read("#{bin}/sparkle completion fish")
-      (fish_completion/"sparkle.fish").write output
-      output = Utils.popen_read("#{bin}/sparkle completion zsh")
-      (zsh_completion/"_sparkle").write output
-
+      generate_completions_from_executable(bin/"sparkle", "completion")
       prefix.install_metafiles
     test: |
-      system "#{bin}/sparkle version"
+      system "#{bin}/sparkle", "version"
 
 builds:
   - id: sparkle
@@ -53,63 +55,23 @@ builds:
 
 checksum: { name_template: checksums.txt }
 
-dockers:
-  - id: service-linux-amd64
-    goos: linux
-    goarch: amd64
-    ids:
-      - sparkle
-    image_templates:
-      - 'ghcr.io/withsparkle/service:{{.Tag}}-amd64'
-      - 'ghcr.io/withsparkle/service:v{{.Major}}-amd64'
-      - 'ghcr.io/withsparkle/service:v{{.Major}}.{{.Minor}}-amd64'
-    use: buildx
-    build_flag_templates:
-      - '--pull'
-      - '--label=org.opencontainers.image.revision={{.FullCommit}}'
-      - '--label=org.opencontainers.image.created={{.Date}}'
-      - '--label=org.opencontainers.image.version={{.Version}}'
-      - '--platform=linux/amd64'
-    extra_files:
-      - LICENSE
-  - id: service-linux-arm64
-    goos: linux
-    goarch: arm64
-    ids:
-      - sparkle
-    image_templates:
-      - 'ghcr.io/withsparkle/service:{{.Tag}}-arm64'
-      - 'ghcr.io/withsparkle/service:v{{.Major}}-arm64'
-      - 'ghcr.io/withsparkle/service:v{{.Major}}.{{.Minor}}-arm64'
-    use: buildx
-    build_flag_templates:
-      - '--pull'
-      - '--label=org.opencontainers.image.revision={{.FullCommit}}'
-      - '--label=org.opencontainers.image.created={{.Date}}'
-      - '--label=org.opencontainers.image.version={{.Version}}'
-      - '--platform=linux/arm64'
-    extra_files:
-      - LICENSE
-
-docker_manifests:
-  - name_template: 'ghcr.io/withsparkle/service:latest'
-    image_templates:
-      - 'ghcr.io/withsparkle/service:{{.Tag}}-amd64'
-      - 'ghcr.io/withsparkle/service:{{.Tag}}-arm64'
-  - name_template: 'ghcr.io/withsparkle/service:{{.Tag}}'
-    image_templates:
-      - 'ghcr.io/withsparkle/service:{{.Tag}}-amd64'
-      - 'ghcr.io/withsparkle/service:{{.Tag}}-arm64'
-  - name_template: 'ghcr.io/withsparkle/service:v{{.Major}}'
-    image_templates:
-      - 'ghcr.io/withsparkle/service:v{{.Major}}-amd64'
-      - 'ghcr.io/withsparkle/service:v{{.Major}}-arm64'
-  - name_template: 'ghcr.io/withsparkle/service:v{{.Major}}.{{.Minor}}'
-    image_templates:
-      - 'ghcr.io/withsparkle/service:v{{.Major}}.{{.Minor}}-amd64'
-      - 'ghcr.io/withsparkle/service:v{{.Major}}.{{.Minor}}-arm64'
+dockers_v2:
+  - id: sparkle
+    ids: [sparkle]
+    images: ['ghcr.io/withsparkle/service']
+    tags:
+      - '{{.Tag}}'
+      - 'v{{.Major}}'
+      - 'v{{.Major}}.{{.Minor}}'
+      - '{{ if not .Prerelease }}latest{{ end }}'
+    extra_files: [LICENSE]
+    labels:
+      org.opencontainers.image.revision: '{{.FullCommit}}'
+      org.opencontainers.image.created: '{{.Date}}'
+      org.opencontainers.image.version: '{{.Version}}'
+    platforms: [linux/amd64, linux/arm64]
 
 release:
-  github:
-    owner: withsparkle
-    name: service
+  # the repository comes from the git remote; a prerelease tag (vX.Y.Z-rcN)
+  # is published as a prerelease, never as Latest
+  prerelease: auto
