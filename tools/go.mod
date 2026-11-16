@@ -1,8 +1,6 @@
 module tools
 
-go 1.21
-
-toolchain go1.21.0
+go 1.23
 
 require (
 	github.com/bufbuild/buf v1.28.1
@@ -15,7 +13,7 @@ require (
 	golang.org/x/tools v0.16.1
 	golang.org/x/vuln v1.0.1
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.3.0
-	google.golang.org/protobuf v1.32.0
+	google.golang.org/protobuf v1.36.12
 )
 
 replace (
@@ -221,7 +219,7 @@ require (
 	github.com/golangci/revgrep v0.5.2 // indirect
 	github.com/golangci/unconvert v0.0.0-20180507085042-28b1c447d1f4 // indirect
 	github.com/google/cel-go v0.18.2 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-containerregistry v0.17.0 // indirect
 	github.com/google/go-github/v57 v57.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
