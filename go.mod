@@ -1,11 +1,11 @@
 module go.octolab.org/ecosystem/sparkle
 
-go 1.21.3
+go 1.25.0
 
 require (
 	connectrpc.com/connect v1.14.0
 	github.com/BurntSushi/toml v1.3.2
-	github.com/fatih/color v1.16.0
+	github.com/fatih/color v1.19.0
 	github.com/goccy/go-yaml v1.11.2
 	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.5.0
@@ -34,7 +34,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
@@ -51,7 +51,7 @@ require (
 	github.com/tkuchiki/go-timezone v0.2.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
-	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
