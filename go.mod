@@ -6,7 +6,7 @@ require (
 	connectrpc.com/connect v1.14.0
 	github.com/BurntSushi/toml v1.3.2
 	github.com/fatih/color v1.16.0
-	github.com/goccy/go-yaml v1.11.2
+	github.com/goccy/go-yaml v1.19.2
 	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.5.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
@@ -53,7 +53,6 @@ require (
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
